@@ -59,7 +59,6 @@ ort_inputs = {
 
 latency = []
 for i, a, p in zip(input_ids, attention_mask, position_ids):
-    print(i)
     ort_inputs = {
         'input_ids':  i.cpu().reshape(1, max_seq_length).numpy(),
         'attention_mask': a.cpu().reshape(1, max_seq_length).numpy(),
@@ -67,6 +66,7 @@ for i, a, p in zip(input_ids, attention_mask, position_ids):
     }
     start = time.time()
     ort_outputs = session.run(None, ort_inputs)
+    print(ort_outputs[0].shape)
     latency.append(time.time() - start)
 print("OnnxRuntime cpu Inference time = {} ms".format(format(sum(latency) * 1000 / len(latency), '.2f')))
 

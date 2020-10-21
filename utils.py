@@ -42,7 +42,10 @@ def get_example_inputs(prompt_text=[],
     if model_name_or_path == "gpt2":
         encodings_dict = tokenizer.batch_encode_plus(prompt_text, padding=True)
     else:
-        encodings_dict = tokenizer.batch_encode_plus(prompt_text, max_length=128, pad_to_max_length = True)
+        encodings_dict = tokenizer.batch_encode_plus(prompt_text,
+                                                     max_length=128,
+                                                     pad_to_max_length=True,
+                                                     truncation=True)
 
     input_ids = torch.tensor(encodings_dict['input_ids'], dtype=torch.int64)
     attention_mask = torch.tensor(encodings_dict['attention_mask'], dtype=torch.int64)
