@@ -1,0 +1,7 @@
+psutil==5.7.2
+torch==1.6.0
+onnxruntime==1.5.1
+transformers==3.3.0
+numpy==1.18.5
+onnxruntime_tools==1.5.2
+netron==4.5.6
