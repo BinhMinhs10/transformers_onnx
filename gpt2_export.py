@@ -22,5 +22,4 @@ num_attention_heads = model.config.n_head
 hidden_size = model.config.n_embd
 num_layer = model.config.n_layer
 
-
 Gpt2Helper.export_onnx(model, device, onnx_model_path)
