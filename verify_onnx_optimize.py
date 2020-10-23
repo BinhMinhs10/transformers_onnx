@@ -2,16 +2,12 @@ import time
 import os
 import psutil
 from utils import gen_sentence
-from onnxruntime_tools import optimizer
-from onnxruntime_tools.transformers import machine_info
 from utils import get_example_inputs
 
 import onnxruntime
 import numpy
 
 if __name__ == "__main__":
-    optimized_model = optimizer.optimize_model("onnx/bert-base-cased.onnx", model_type='bert', num_heads=12, hidden_size=768)
-    optimized_model.save_model_to_file("onnx/optimized_model_cpu.onnx")
 
     os.environ["OMP_NUM_THREADS"] = str(psutil.cpu_count(logical=True))
     os.environ["OMP_WAIT_POLICY"] = 'ACTIVE'
