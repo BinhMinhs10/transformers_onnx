@@ -2,8 +2,8 @@ import psutil
 import os
 import time
 import torch
-from phobert_utils import get_example_inputs
-from transformers import RobertaForMaskedLM, RobertaConfig, RobertaModel
+from phobert_model.phobert_utils import get_example_inputs
+from transformers import RobertaConfig, RobertaModel
 import onnxruntime
 import numpy
 
@@ -15,12 +15,12 @@ os.environ["OMP_WAIT_POLICY"] = 'ACTIVE'
 if 'CUDAExecutionProvider' in onnxruntime.get_available_providers():
     print("warning: onnxruntime-gpu is not built with OpenMP.")
 
-session = onnxruntime.InferenceSession("onnx/vinai/phobert-base.onnx",
+session = onnxruntime.InferenceSession("../onnx/vinai/phobert-base.onnx",
                                        providers=["CPUExecutionProvider"])
 
 exam_text = ["Hôm nay trời đẹp quá", "Người đàn ông bị rắn hổ mang chúa cắn"]
 # exam_text = gen_sentence(20)
-cache_dir = "./cache_models"
+cache_dir = "../cache_models"
 model_name_or_path = "vinai/phobert-base"
 max_seq_length = 128
 input_ids, attention_mask, token_type_ids = get_example_inputs(prompt_text=exam_text,

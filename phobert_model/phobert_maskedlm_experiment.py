@@ -2,17 +2,17 @@ import os
 import torch
 import onnxruntime
 from transformers import RobertaForMaskedLM, RobertaConfig, PhobertTokenizer
-from phobert_utils import to_numpy
+from phobert_model.phobert_utils import to_numpy
 import numpy as np
 device = torch.device("cpu")
 
-output_dir = os.path.join(".", "onnx")
+output_dir = os.path.join("..", "onnx")
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 export_model_path = os.path.join(output_dir, "phobert-base-formaskedlm.onnx")
 model_name_or_path = "vinai/phobert-base"
-cache_dir = "./cache_models"
+cache_dir = "../cache_models"
 enable_overwrite = True
 
 tokenizer = PhobertTokenizer.from_pretrained(model_name_or_path)

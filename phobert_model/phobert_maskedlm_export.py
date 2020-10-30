@@ -4,7 +4,7 @@ from transformers import RobertaForMaskedLM, RobertaConfig, PhobertTokenizer
 device = torch.device("cpu")
 
 model_name_or_path = "vinai/phobert-base"
-cache_dir = "./cache_models"
+cache_dir = "../cache_models"
 enable_overwrite = True
 
 tokenizer = PhobertTokenizer.from_pretrained(model_name_or_path)
@@ -20,7 +20,7 @@ model = RobertaForMaskedLM.from_pretrained(
     cache_dir=cache_dir
 )
 
-output_dir = os.path.join(".", "onnx")
+output_dir = os.path.join("..", "onnx")
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 export_model_path = os.path.join(output_dir,
