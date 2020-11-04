@@ -22,7 +22,7 @@ def positional_encoding(position, d_model):
 
 
 if __name__ == "__main__":
-    pos_encoding = positional_encoding(50, 512)
+    pos_encoding = positional_encoding(2, 512)
     print(pos_encoding.shape)
 
     plt.pcolormesh(pos_encoding[0], cmap='RdBu')

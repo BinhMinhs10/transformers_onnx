@@ -1,6 +1,7 @@
 import tensorflow as tf
 
 
+# outputs 1 at pad value 0 is present
 def create_padding_mask(seq):
     seq = tf.cast(tf.math.equal(seq, 0), tf.float32)
     # add extra dimensions to add the padding

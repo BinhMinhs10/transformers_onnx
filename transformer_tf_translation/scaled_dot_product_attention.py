@@ -1,9 +1,15 @@
+import numpy as np
 import tensorflow as tf
 
 
 def scaled_dot_product_attention(q, k, v, mask):
-    """calculate the attention weight."""
-    matmul_qk = tf.matpul(q, k, transpose_b=True)
+    """calculate the attention weight.
+    Args:
+        q: query shape == (..., seq_len_q, depth)
+        k: key shape == (..., seq_len_k, depth)
+        v: value shape == (..., seq_len_v, depth_v)
+    """
+    matmul_qk = tf.matmul(q, k, transpose_b=True)
 
     # scale matmul_qk
     dk = tf.cast(tf.shape(k)[-1], tf.float32)
@@ -18,3 +24,37 @@ def scaled_dot_product_attention(q, k, v, mask):
     attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1) # (..., seq_len_q, seq_len_k)
     output = tf.matmul(attention_weights, v) # (..., seq_len_q, depth_v)
     return output, attention_weights
+
+def print_out(q, k, v):
+    temp_out, temp_attn = scaled_dot_product_attention(
+        q, k, v, None
+    )
+    print('Attention weights are: ')
+    print(temp_attn)
+    print('Output is: ')
+    print(temp_out)
+
+
+# decide the amount of given to Q
+if __name__ == "__main__":
+    np.set_printoptions(suppress=True)
+
+    temp_k = tf.constant([
+        [10, 0, 0],
+        [0, 10, 0],
+        [0, 0, 10],
+        [0, 0, 10]
+    ], dtype=tf.float32) # (4,3)
+
+    temp_v = tf.constant([
+        [1, 0],
+        [10, 0],
+        [100, 5],
+        [1000, 6]
+    ], dtype=tf.float32) # (4,2)
+
+    temp_q = tf.constant([[0, 10, 0]], dtype=tf.float32)
+    print_out(temp_q, temp_k, temp_v)
+
+    temp_q = tf.constant([[0, 0, 10], [0, 10, 0], [10, 10, 0]], dtype=tf.float32)  # (3, 3)
+    print_out(temp_q, temp_k, temp_v)

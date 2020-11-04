@@ -11,6 +11,7 @@ train_examples, val_examples = examples['train'], examples['validation']
 
 tokenizer_en = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus(
     (en.numpy() for pt, en in train_examples), target_vocab_size=2**13)
+
 tokenizer_pt = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus(
     (pt.numpy() for pt, en in train_examples), target_vocab_size=2**13)
 
@@ -20,11 +21,12 @@ MAX_LENGTH = 40
 
 
 def encode(lang1, lang2):
-    lang1 = [tokenizer_pt.vocab_size] + tokenizer_pt.encode(lang1.numpy()) + [tokenizer_pt.vocab_size+1]
+    lang1 = [tokenizer_pt.vocab_size] + tokenizer_pt.encode(lang1.numpy()) + [tokenizer_pt.vocab_size + 1]
     lang2 = [tokenizer_en.vocab_size] + tokenizer_en.encode(lang2.numpy()) + [tokenizer_en.vocab_size + 1]
     return lang1, lang2
 
 
+# tf.py_function will pass regular tensors
 def tf_encode(pt, en):
     result_pt, result_en = tf.py_function(encode, [pt, en], [tf.int16, tf.int64])
     result_pt.set_shape([None])
