@@ -23,4 +23,4 @@ python bert_onnxruntime.py
     * some optimization is better to done offline. Like change input tensor type from float32 to float16 avoid Cast nodes to achieve better performance in V100 and T4 GPU
 ```bash
 python experiment.py
-```  
+```
