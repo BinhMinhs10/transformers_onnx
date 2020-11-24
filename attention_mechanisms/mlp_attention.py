@@ -16,8 +16,6 @@ class MLPAttention(nn.Module):
         # expand query to (batch_size, queries, 1, units)
         # key to (batch_size, 1, kv_pairs, units)
         query, key = self.w_q(query), self.w_k(key)
-        print(query.unsqueeze(2))
-        print(key.unsqueeze(1))
         features = query.unsqueeze(2) + key.unsqueeze(1)
         features = torch.tanh(features)
         scores = self.v(features).squeeze(-1)

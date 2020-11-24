@@ -11,7 +11,7 @@ def masked_softmax(X, valid_len):
     else:
         shape = X.shape
         if valid_len.dim() == 1:
-            # repeat value [2, 2, 3, 3]
+            # repeat value [2, 2, 2, 3, 3, 3]
             valid_len = torch.repeat_interleave(
                 valid_len,
                 repeats=shape[1],
@@ -38,19 +38,22 @@ class DotProductAttention(nn.Module):
 
     def forward(self, query, key, value, valid_len=None):
         d = query.shape[-1]
+        # dot matrix (b, n, m) x (b, m, k)
         scores = torch.bmm(query, key.transpose(1, 2)) / math.sqrt(d)
         attention_weights = self.dropout(masked_softmax(scores, valid_len))
-        print(attention_weights.shape)
-        print(values.shape)
         return torch.bmm(attention_weights, value)
 
 
 if __name__ == "__main__":
     atten = DotProductAttention(dropout=0.5)
     atten.eval()
+
     keys = torch.ones(2, 10, 2)
-    # shape = (2, 10, 4)
+    query = torch.ones(2, 1, 2)
+
     print(torch.arange(40, dtype=torch.float32))
+    # value matrix shape = (2, 10, 4)
     values = torch.arange(40, dtype=torch.float32).reshape(1, 10, 4).repeat(2, 1, 1)
-    result = atten(torch.ones(2, 1, 2), keys, values, torch.tensor([2, 6]))
+
+    result = atten(query, keys, values, torch.tensor([2, 6]))
     print(result)
